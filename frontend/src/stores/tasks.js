@@ -9,12 +9,31 @@ export const useTasksStore = defineStore('tasks', () => {
   const isLoading = ref(false)
   const error = ref('')
 
+  function mapTask(t) {
+    if (!t) return null
+    return {
+      id: t.id,
+      original_filename: t.nombre_archivo,
+      total_emails: t.total_correos,
+      processed: t.procesados,
+      valid: t.validos,
+      invalid: t.invalidos,
+      throwaway: t.desechables,
+      status: t.estado,
+      is_free: t.es_gratuita,
+      progress: t.progreso,
+      created_at: t.created_at,
+      completed_at: t.completed_at
+    }
+  }
+
   async function fetchTasks() {
     isLoading.value = true
     error.value = ''
     try {
       const { data } = await api.get('/tasks/')
-      tasks.value = data.results || data
+      const rawTasks = data.results || data
+      tasks.value = rawTasks.map(mapTask)
     } catch (err) {
       error.value = err.response?.data?.detail || 'Error al cargar tareas'
     } finally {
@@ -27,8 +46,9 @@ export const useTasksStore = defineStore('tasks', () => {
     error.value = ''
     try {
       const { data } = await api.get(`/tasks/${id}/`)
-      currentTask.value = data
-      return data
+      const task = mapTask(data)
+      currentTask.value = task
+      return task
     } catch (err) {
       error.value = err.response?.data?.detail || 'Error al cargar la tarea'
       throw err
@@ -46,8 +66,9 @@ export const useTasksStore = defineStore('tasks', () => {
       const { data } = await api.post('/validate/upload/', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      currentTask.value = data
-      return data
+      const task = mapTask(data.tarea)
+      currentTask.value = task
+      return task
     } catch (err) {
       error.value = err.response?.data?.detail || 'Error al subir el archivo'
       throw err
