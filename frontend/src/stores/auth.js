@@ -41,8 +41,8 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = ''
     try {
       const { data } = await api.post('/auth/verify/', { token: magicToken })
-      setToken(data.access)
-      user.value = data.user || null
+      setToken(data.token)
+      user.value = data.usuario || null
       return data
     } catch (err) {
       error.value = err.response?.data?.detail || 'Token inválido o expirado'
