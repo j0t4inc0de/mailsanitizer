@@ -147,6 +147,7 @@ async function startValidation() {
   isUploading.value = true
   try {
     const task = await tasksStore.uploadCSV(selectedFile.value)
+    await auth.fetchUser() // Refresh user balance in Navbar/UI
     router.push(`/tasks/${task.id}`)
   } catch {
     // error is set in store

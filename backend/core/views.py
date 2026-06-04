@@ -308,12 +308,38 @@ class UploadCSVView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        user = request.user
+        cost = len(emails)
+
+        # Check credits
+        if user.creditos < cost:
+            return Response(
+                {
+                    "error": True,
+                    "detalle": f"Créditos insuficientes. El archivo contiene {cost} correos, pero solo tienes {user.creditos} créditos.",
+                },
+                status=status.HTTP_402_PAYMENT_REQUIRED,
+            )
+
+        # Deduct credits
+        user.creditos -= cost
+        user.save(update_fields=["creditos"])
+
         # Create the task
         task = ValidationTask.objects.create(
             usuario=user,
             nombre_archivo=csv_file.name or "archivo.csv",
-            total_correos=len(emails),
+            total_correos=cost,
             es_gratuita=False,
+        )
+
+        # Create CreditTransaction
+        CreditTransaction.objects.create(
+            usuario=user,
+            tipo="uso",
+            cantidad=-cost,
+            referencia=f"task:{task.id}",
+            descripcion=f"Validación de lista: {task.nombre_archivo}",
         )
 
         # Bulk-create EmailResult rows with 'pendiente' estado
@@ -329,6 +355,11 @@ class UploadCSVView(APIView):
             r.lpush("cleanmail:tasks", str(task.id))
         except Exception:
             logger.exception("Error al encolar tarea %s en Redis", task.id)
+            # Revert credits on enqueuing failure
+            user.creditos += cost
+            user.save(update_fields=["creditos"])
+            # Remove transaction and set task to error
+            CreditTransaction.objects.filter(referencia=f"task:{task.id}").delete()
             task.estado = "error"
             task.save(update_fields=["estado"])
             return Response(
@@ -495,11 +526,7 @@ class TaskDownloadView(APIView):
     GET /api/tasks/<id>/download/
 
     Returns a CSV file with all validation results for the task.
-
-    Credit rules:
-      - If ``es_gratuita`` is True → free download, no credits deducted.
-      - Otherwise → deduct credits equal to ``total_correos`` and create
-        a CreditTransaction.
+    Downloads are free because credits are deducted at upload time.
     """
 
     permission_classes = [IsAuthenticated]
@@ -517,40 +544,6 @@ class TaskDownloadView(APIView):
             return Response(
                 {"error": True, "detalle": "La tarea aún no ha finalizado."},
                 status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        user = request.user
-
-        # Check if download already paid for (idempotency via referencia)
-        download_ref = f"download:task:{task.id}"
-        already_paid = CreditTransaction.objects.filter(
-            usuario=user, referencia=download_ref
-        ).exists()
-
-        if not task.es_gratuita and not already_paid:
-            cost = task.total_correos
-            if user.creditos < cost:
-                return Response(
-                    {
-                        "error": True,
-                        "detalle": (
-                            f"Créditos insuficientes. Necesitas {cost} créditos, "
-                            f"tienes {user.creditos}."
-                        ),
-                    },
-                    status=status.HTTP_402_PAYMENT_REQUIRED,
-                )
-
-            # Deduct credits
-            user.creditos -= cost
-            user.save(update_fields=["creditos"])
-
-            CreditTransaction.objects.create(
-                usuario=user,
-                tipo="uso",
-                cantidad=-cost,
-                referencia=download_ref,
-                descripcion=f"Descarga de resultados: {task.nombre_archivo}",
             )
 
         # Build CSV response
