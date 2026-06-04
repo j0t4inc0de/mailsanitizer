@@ -49,7 +49,7 @@
           <!-- Price -->
           <div class="mb-2">
             <span class="font-outfit text-5xl font-extrabold text-brand-text">${{ plan.price }}</span>
-            <span class="text-brand-muted text-sm ml-2">USD</span>
+            <span class="text-brand-muted text-sm ml-2">CLP</span>
           </div>
 
           <!-- Credits -->
@@ -61,7 +61,7 @@
           <!-- Cost per email -->
           <div class="rounded-lg bg-white/[0.03] border border-brand-border px-4 py-2 mb-6">
             <span class="text-brand-muted text-xs">Costo por correo: </span>
-            <span class="text-brand-text text-xs font-semibold">${{ plan.costPerEmail }} USD</span>
+            <span class="text-brand-text text-xs font-semibold">${{ plan.costPerEmail }} CLP</span>
           </div>
 
           <!-- Features -->
@@ -114,10 +114,10 @@ const plans = [
   {
     name: 'Starter',
     tagline: 'Ideal para freelancers',
-    price: '1.99',
+    price: '1.990',
     credits: 2000,
     creditsFormatted: '2.000',
-    costPerEmail: '0.001',
+    costPerEmail: '0.99',
     features: [
       '2.000 créditos de validación',
       'Validación sintaxis + DNS + SMTP',
@@ -126,15 +126,15 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: false,
-    url: 'https://cleanmail.lemonsqueezy.com/buy/starter',
+    url: 'https://wearesamod.lemonsqueezy.com/buy/1744097',
   },
   {
     name: 'Pro',
     tagline: 'Para agencias pequeñas',
-    price: '4.99',
+    price: '4.990',
     credits: 10000,
     creditsFormatted: '10.000',
-    costPerEmail: '0.0005',
+    costPerEmail: '0.49',
     features: [
       '10.000 créditos de validación',
       'Todo lo del plan Starter',
@@ -143,24 +143,24 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: true,
-    url: 'https://cleanmail.lemonsqueezy.com/buy/pro',
+    url: 'https://wearesamod.lemonsqueezy.com/buy/1744103',
   },
   {
     name: 'Agency',
     tagline: 'Para equipos de marketing',
-    price: '9.99',
+    price: '9.900',
     credits: 30000,
     creditsFormatted: '30.000',
-    costPerEmail: '0.00033',
+    costPerEmail: '0.33',
     features: [
       '30.000 créditos de validación',
       'Todo lo del plan Pro',
       'API de validación incluida',
       'Webhook de resultados',
-      'Los créditos nunca expiran',
+      'Suscripción mensual',
     ],
     featured: false,
-    url: 'https://cleanmail.lemonsqueezy.com/buy/agency',
+    url: 'https://wearesamod.lemonsqueezy.com/buy/1744105',
   },
 ]
 
