@@ -62,7 +62,7 @@
               <span class="text-2xl">🎉</span>
               <div>
                 <p class="text-brand-secondary font-semibold text-sm">¡Tu primera validación es gratis!</p>
-                <p class="text-brand-muted text-xs">Hasta 500 correos sin costo para que pruebes el servicio.</p>
+                <p class="text-brand-muted text-xs">Hasta 50 correos sin costo para que pruebes el servicio.</p>
               </div>
             </div>
 
@@ -125,7 +125,7 @@ const estimatedEmails = computed(() => {
 })
 
 const isFirstTaskFree = computed(() => {
-  return tasksStore.tasks.length === 0 && estimatedEmails.value <= 500
+  return tasksStore.tasks.length === 0 && estimatedEmails.value <= 50
 })
 
 function onFileSelected(file) {

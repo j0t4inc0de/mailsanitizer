@@ -167,7 +167,7 @@ const plans = [
 const faqs = [
   {
     q: '¿Qué es un crédito?',
-    a: 'Un crédito equivale a la validación de un correo electrónico. Si subes una lista con 500 correos, se usan 500 créditos.',
+    a: 'Un crédito equivale a la validación de un correo electrónico. Si subes una lista con 50 correos, se usan 50 créditos.',
   },
   {
     q: '¿Los créditos expiran?',
@@ -179,7 +179,7 @@ const faqs = [
   },
   {
     q: '¿Puedo probar antes de comprar?',
-    a: 'Sí, tu primera validación de hasta 500 correos es completamente gratis. También puedes validar correos individuales sin costo.',
+    a: 'Sí, tu primera validación de hasta 50 correos es completamente gratis. También puedes validar correos individuales sin costo.',
   },
   {
     q: '¿Qué métodos de pago aceptan?',
