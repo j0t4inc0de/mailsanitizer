@@ -11,15 +11,21 @@ export const useTasksStore = defineStore('tasks', () => {
 
   function mapTask(t) {
     if (!t) return null
+    const statusMap = {
+      'pendiente': 'pending',
+      'procesando': 'processing',
+      'completado': 'completed',
+      'error': 'error'
+    }
     return {
       id: t.id,
       original_filename: t.nombre_archivo,
       total_emails: t.total_correos,
-      processed: t.procesados,
+      processed_emails: t.procesados,
       valid: t.validos,
       invalid: t.invalidos,
       throwaway: t.desechables,
-      status: t.estado,
+      status: statusMap[t.estado] || t.estado,
       is_free: t.es_gratuita,
       progress: t.progreso,
       created_at: t.created_at,
