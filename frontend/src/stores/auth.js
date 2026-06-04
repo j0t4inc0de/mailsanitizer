@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', () => {
   const error = ref('')
 
   const isAuthenticated = computed(() => !!token.value)
-  const credits = computed(() => user.value?.credits ?? 0)
+  const credits = computed(() => user.value?.creditos ?? 0)
 
   function setToken(newToken) {
     token.value = newToken
