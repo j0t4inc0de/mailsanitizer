@@ -308,17 +308,12 @@ class UploadCSVView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Determine if this is the user's first task and ≤50 emails
-        user = request.user
-        is_first_task = not ValidationTask.objects.filter(usuario=user).exists()
-        es_gratuita = is_first_task and len(emails) <= 50
-
         # Create the task
         task = ValidationTask.objects.create(
             usuario=user,
             nombre_archivo=csv_file.name or "archivo.csv",
             total_correos=len(emails),
-            es_gratuita=es_gratuita,
+            es_gratuita=False,
         )
 
         # Bulk-create EmailResult rows with 'pendiente' estado

@@ -59,10 +59,10 @@
               v-if="isFirstTaskFree"
               class="mt-4 rounded-xl bg-brand-secondary/10 border border-brand-secondary/20 p-4 flex items-center gap-3"
             >
-              <span class="text-2xl">🎉</span>
+              <span class="text-2xl">📊</span>
               <div>
-                <p class="text-brand-secondary font-semibold text-sm">¡Tu primera validación es gratis!</p>
-                <p class="text-brand-muted text-xs">Hasta 50 correos sin costo para que pruebes el servicio.</p>
+                <p class="text-brand-secondary font-semibold text-sm">Tus validaciones usarán créditos</p>
+                <p class="text-brand-muted text-xs">Se descontará 1 crédito por cada correo en tu archivo.</p>
               </div>
             </div>
 
@@ -125,7 +125,7 @@ const estimatedEmails = computed(() => {
 })
 
 const isFirstTaskFree = computed(() => {
-  return tasksStore.tasks.length === 0 && estimatedEmails.value <= 50
+  return false
 })
 
 function onFileSelected(file) {

@@ -179,7 +179,7 @@ const faqs = [
   },
   {
     q: '¿Puedo probar antes de comprar?',
-    a: 'Sí, tu primera validación de hasta 50 correos es completamente gratis. También puedes validar correos individuales sin costo.',
+    a: 'Al crear tu cuenta recibes 50 créditos gratis automáticamente para probar el servicio. No necesitas tarjeta de crédito para empezar.',
   },
   {
     q: '¿Qué métodos de pago aceptan?',
