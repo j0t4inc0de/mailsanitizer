@@ -86,8 +86,15 @@ export const useTasksStore = defineStore('tasks', () => {
   async function fetchDiagnostic(id) {
     try {
       const { data } = await api.get(`/tasks/${id}/diagnostic/`)
-      diagnostic.value = data
-      return data
+      const mappedDiagnostic = {
+        total_emails: data.total_correos,
+        valid_count: data.validos,
+        invalid_count: data.invalidos,
+        disposable_count: data.desechables,
+        preview: data.preview || [] // In case we add preview later
+      }
+      diagnostic.value = mappedDiagnostic
+      return mappedDiagnostic
     } catch (err) {
       error.value = err.response?.data?.detail || 'Error al cargar el diagnóstico'
       throw err
