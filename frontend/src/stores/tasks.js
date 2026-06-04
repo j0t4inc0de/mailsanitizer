@@ -43,7 +43,7 @@ export const useTasksStore = defineStore('tasks', () => {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      const { data } = await api.post('/tasks/', formData, {
+      const { data } = await api.post('/validate/upload/', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       currentTask.value = data
