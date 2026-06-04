@@ -126,7 +126,7 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: false,
-    url: 'https://wearesamod.lemonsqueezy.com/buy/1744097',
+    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/3eb225d2-7a51-48ef-ad40-d57f2335782e',
   },
   {
     name: 'Pro',
@@ -143,7 +143,7 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: true,
-    url: 'https://wearesamod.lemonsqueezy.com/buy/1744103',
+    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/c6cb9e2c-a4cc-45ef-a698-e55b72e0e4f7',
   },
   {
     name: 'Agency',
@@ -160,7 +160,7 @@ const plans = [
       'Suscripción mensual',
     ],
     featured: false,
-    url: 'https://wearesamod.lemonsqueezy.com/buy/1744105',
+    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/3efb4d37-3627-4c34-87da-738a66675d3a',
   },
 ]
 
