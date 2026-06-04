@@ -321,9 +321,9 @@ class UploadCSVView(APIView):
             es_gratuita=es_gratuita,
         )
 
-        # Bulk-create EmailResult rows with empty estado
+        # Bulk-create EmailResult rows with 'pendiente' estado
         email_results = [
-            EmailResult(tarea=task, correo=email)
+            EmailResult(tarea=task, correo=email, estado='pendiente')
             for email in emails
         ]
         EmailResult.objects.bulk_create(email_results, batch_size=1000)
