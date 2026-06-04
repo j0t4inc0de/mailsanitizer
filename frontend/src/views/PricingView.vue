@@ -187,7 +187,7 @@ const faqs = [
   },
   {
     q: '¿Puedo obtener un reembolso?',
-    a: 'Si no estás satisfecho con el servicio, puedes solicitar un reembolso dentro de las primeras 24 horas de tu compra.',
+    a: 'Ofrecemos una garantía de reembolso de 14 días para cualquier paquete de créditos que no haya sido utilizado. Consulta nuestra Política de Reembolso para más información.',
   },
 ]
 </script>

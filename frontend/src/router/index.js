@@ -7,6 +7,9 @@ import DashboardView from '../views/DashboardView.vue'
 import UploadView from '../views/UploadView.vue'
 import ResultsView from '../views/ResultsView.vue'
 import PricingView from '../views/PricingView.vue'
+import TermsView from '../views/TermsView.vue'
+import PrivacyView from '../views/PrivacyView.vue'
+import RefundView from '../views/RefundView.vue'
 
 const routes = [
   {
@@ -43,6 +46,24 @@ const routes = [
     path: '/pricing',
     name: 'pricing',
     component: PricingView,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/terms',
+    name: 'terms',
+    component: TermsView,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/privacy',
+    name: 'privacy',
+    component: PrivacyView,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/refunds',
+    name: 'refunds',
+    component: RefundView,
     meta: { requiresAuth: false },
   },
 ]
