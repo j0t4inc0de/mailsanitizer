@@ -1,0 +1,90 @@
+services:
+  # ─── Base de Datos ───
+  postgres:
+    image: postgres:16-alpine
+    container_name: cleanmail-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: cleanmail
+      POSTGRES_USER: ${DB_USER:-cleanmail}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - /mnt/storage/mailsanitizer/pgdata:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-cleanmail}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Cola de Tareas ───
+  redis:
+    image: redis:7-alpine
+    container_name: cleanmail-redis
+    restart: unless-stopped
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Backend Django (API) ───
+  backend:
+    build: ./backend
+    container_name: cleanmail-api
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgres://${DB_USER:-cleanmail}:${DB_PASSWORD}@postgres:5432/cleanmail
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DEBUG=${DEBUG:-0}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-clean.wearesamod.com,localhost}
+      - LEMON_SQUEEZY_WEBHOOK_SECRET=${LS_WEBHOOK_SECRET}
+      - LEMON_SQUEEZY_STORE_ID=${LS_STORE_ID}
+      - N8N_MAGIC_LINK_WEBHOOK=${N8N_MAGIC_LINK_WEBHOOK:-https://n8n.wearesamod.com/webhook/magic-link}
+      - FRONTEND_URL=${FRONTEND_URL:-https://clean.wearesamod.com}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - internal
+      - proxy_network
+
+  # ─── Worker Asíncrono (Procesador de CSVs) ───
+  worker:
+    build: ./backend
+    container_name: cleanmail-worker
+    restart: unless-stopped
+    command: python manage.py process_queue
+    environment:
+      - DATABASE_URL=postgres://${DB_USER:-cleanmail}:${DB_PASSWORD}@postgres:5432/cleanmail
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${DJANGO_SECRET_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - internal
+
+  # ─── Frontend Vue.js + Nginx Reverse Proxy ───
+  frontend:
+    build: ./frontend
+    container_name: cleanmail-web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - proxy_network
+
+networks:
+  internal:
+    driver: bridge
+  proxy_network:
+    external: true
