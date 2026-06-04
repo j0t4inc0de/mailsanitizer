@@ -155,8 +155,8 @@
             <p class="text-brand-muted text-sm mb-5">{{ plan.tagline }}</p>
 
             <div class="mb-6">
-              <span class="font-outfit text-4xl font-extrabold text-brand-text">${{ plan.price }}</span>
-              <span class="text-brand-muted text-sm ml-1">USD</span>
+              <span class="font-outfit text-5xl font-extrabold text-brand-text">${{ plan.price }}</span>
+              <span class="text-brand-muted text-sm ml-2">CLP</span>
             </div>
 
             <ul class="space-y-3 mb-8 flex-1">
@@ -250,44 +250,44 @@ const plans = [
   {
     name: 'Starter',
     tagline: 'Ideal para freelancers',
-    price: '1.99',
+    price: '1.990',
+    credits: 2000,
     features: [
       '2.000 créditos de validación',
       'Validación sintaxis + DNS + SMTP',
       'Detección de correos desechables',
-      'Descarga CSV limpio',
       'Los créditos nunca expiran',
     ],
     featured: false,
-    url: 'https://cleanmail.lemonsqueezy.com/buy/starter',
+    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/3eb225d2-7a51-48ef-ad40-d57f2335782e',
   },
   {
     name: 'Pro',
     tagline: 'Para agencias pequeñas',
-    price: '4.99',
+    price: '4.990',
+    credits: 10000,
     features: [
       '10.000 créditos de validación',
       'Todo lo del plan Starter',
       'Diagnóstico detallado por lista',
-      'Soporte prioritario por email',
       'Los créditos nunca expiran',
     ],
     featured: true,
-    url: 'https://cleanmail.lemonsqueezy.com/buy/pro',
+    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/c6cb9e2c-a4cc-45ef-a698-e55b72e0e4f7',
   },
   {
     name: 'Agency',
     tagline: 'Para equipos de marketing',
-    price: '9.99',
+    price: '9.900',
+    credits: 30000,
     features: [
       '30.000 créditos de validación',
-      'Todo lo del plan Pro',
       'API de validación incluida',
       'Webhook de resultados',
-      'Los créditos nunca expiran',
+      'Suscripción mensual',
     ],
     featured: false,
-    url: 'https://cleanmail.lemonsqueezy.com/buy/agency',
+    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/3efb4d37-3627-4c34-87da-738a66675d3a',
   },
 ]
 </script>
