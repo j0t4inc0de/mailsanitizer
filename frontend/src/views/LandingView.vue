@@ -8,11 +8,6 @@
     <!-- ─── HERO ─────────────────────────────────────────────── -->
     <section class="relative pt-32 pb-16 sm:pt-40 sm:pb-24 px-4">
       <div class="mx-auto max-w-5xl text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-brand-border bg-brand-glass px-4 py-1.5 text-sm text-brand-muted mb-8 backdrop-blur-sm animate-fade-in">
-          <span class="w-2 h-2 rounded-full bg-brand-secondary animate-pulse"></span>
-          Validación de correos con IA + verificación SMTP
-        </div>
-
         <h1 class="font-outfit text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-6 animate-slide-up">
           Limpia tu lista de correos
           <br />
