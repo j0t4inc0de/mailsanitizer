@@ -49,7 +49,7 @@
           <!-- Price -->
           <div class="mb-2">
             <span class="font-outfit text-5xl font-extrabold text-brand-text">${{ plan.price }}</span>
-            <span class="text-brand-muted text-sm ml-2">CLP</span>
+            <span class="text-brand-muted text-sm ml-2">USD</span>
           </div>
 
           <!-- Credits -->
@@ -61,7 +61,7 @@
           <!-- Cost per email -->
           <div class="rounded-lg bg-white/[0.03] border border-brand-border px-4 py-2 mb-6">
             <span class="text-brand-muted text-xs">Costo por correo: </span>
-            <span class="text-brand-text text-xs font-semibold">${{ plan.costPerEmail }} CLP</span>
+            <span class="text-brand-text text-xs font-semibold">${{ plan.costPerEmail }} USD</span>
           </div>
 
           <!-- Features -->
@@ -75,15 +75,13 @@
           </ul>
 
           <!-- CTA -->
-          <a
-            :href="plan.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full text-center py-3.5"
+          <button
+            @click="openCheckout(plan.priceId)"
+            class="w-full text-center py-3.5 rounded-lg font-semibold transition-all"
             :class="plan.featured ? 'btn-primary text-base' : 'btn-secondary text-base'"
           >
             Comprar créditos
-          </a>
+          </button>
         </div>
       </div>
 
@@ -110,14 +108,57 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
+
+const router = useRouter()
+const auth = useAuthStore()
+
+onMounted(() => {
+  if (window.Paddle) {
+    window.Paddle.Environment.set('production');
+    window.Paddle.Initialize({
+      token: 'live_777576b813afa8c37f06f84fc08'
+    });
+  }
+})
+
+const openCheckout = (priceId) => {
+  if (!auth.isAuthenticated || !auth.user) {
+    alert('Debes iniciar sesión para comprar créditos.');
+    router.push('/login');
+    return;
+  }
+
+  if (window.Paddle) {
+    window.Paddle.Checkout.open({
+      items: [
+        {
+          priceId: priceId,
+          quantity: 1
+        }
+      ],
+      customer: {
+        email: auth.user.email
+      },
+      customData: {
+        user_id: auth.user.id
+      }
+    });
+  } else {
+    console.error('Paddle no está inicializado');
+  }
+}
+
 const plans = [
   {
     name: 'Starter',
     tagline: 'Ideal para freelancers',
-    price: '1.990',
+    price: '2.00',
     credits: 2000,
     creditsFormatted: '2.000',
-    costPerEmail: '0.99',
+    costPerEmail: '0.001',
     features: [
       '2.000 créditos de validación',
       'Validación sintaxis + DNS + SMTP',
@@ -126,15 +167,15 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: false,
-    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/3eb225d2-7a51-48ef-ad40-d57f2335782e',
+    priceId: 'pri_01ktd14fshnwkbh33wyep83ymz',
   },
   {
     name: 'Pro',
     tagline: 'Para agencias pequeñas',
-    price: '4.990',
+    price: '5.00',
     credits: 10000,
     creditsFormatted: '10.000',
-    costPerEmail: '0.49',
+    costPerEmail: '0.0005',
     features: [
       '10.000 créditos de validación',
       'Todo lo del plan Starter',
@@ -143,24 +184,24 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: true,
-    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/c6cb9e2c-a4cc-45ef-a698-e55b72e0e4f7',
+    priceId: 'pri_01ktd18mqqxsfyqpken390tvtn',
   },
   {
     name: 'Agency',
     tagline: 'Para equipos de marketing',
-    price: '9.900',
+    price: '10.00',
     credits: 30000,
     creditsFormatted: '30.000',
-    costPerEmail: '0.33',
+    costPerEmail: '0.0003',
     features: [
       '30.000 créditos de validación',
       'Todo lo del plan Pro',
       'API de validación incluida',
       'Webhook de resultados',
-      'Suscripción mensual',
+      'Pago único, sin amarres',
     ],
     featured: false,
-    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/3efb4d37-3627-4c34-87da-738a66675d3a',
+    priceId: 'pri_01ktd1da3b7m0prr2wxx9gww3g',
   },
 ]
 
@@ -183,7 +224,7 @@ const faqs = [
   },
   {
     q: '¿Qué métodos de pago aceptan?',
-    a: 'Aceptamos tarjetas de crédito/débito y PayPal a través de Lemon Squeezy, nuestra plataforma de pagos segura.',
+    a: 'Aceptamos tarjetas de crédito/débito y PayPal a través de Paddle, nuestra plataforma de pagos segura a nivel global.',
   },
   {
     q: '¿Puedo obtener un reembolso?',
