@@ -33,7 +33,17 @@
           class="rounded-xl border p-5 flex items-start gap-4 transition-all duration-500"
           :class="resultClasses"
         >
-          <div class="text-3xl flex-shrink-0 mt-0.5">{{ resultIcon }}</div>
+          <!-- Icons as SVGs -->
+          <svg v-if="result.estado === 'valido'" class="w-8 h-8 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <svg v-else-if="result.estado === 'desechable'" class="w-8 h-8 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+          <svg v-else class="w-8 h-8 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+
           <div>
             <p class="font-outfit font-bold text-lg" :class="resultTextColor">
               {{ resultTitle }}
@@ -66,45 +76,44 @@ async function validate() {
     result.value = data
   } catch (err) {
     result.value = {
-      is_valid: false,
-      reason: err.response?.data?.detail || 'Error de conexión. Intenta de nuevo.',
+      estado: 'invalido',
+      motivo: err.response?.data?.detail || 'Error de conexión. Intenta de nuevo.',
     }
   } finally {
     isLoading.value = false
   }
 }
 
-const resultIcon = computed(() => {
-  if (!result.value) return ''
-  if (result.value.is_disposable) return '⚠️'
-  if (result.value.is_valid) return '✅'
-  return '❌'
-})
-
 const resultTitle = computed(() => {
   if (!result.value) return ''
-  if (result.value.is_disposable) return 'Dominio desechable detectado'
-  if (result.value.is_valid) return 'Correo válido'
+  if (result.value.estado === 'desechable') return 'Dominio desechable detectado'
+  if (result.value.estado === 'valido') return 'Correo válido'
   return 'Correo inválido'
 })
 
 const resultDetail = computed(() => {
   if (!result.value) return ''
-  if (result.value.is_disposable) {
+  if (result.value.estado === 'desechable') {
     return 'Este correo utiliza un dominio temporal. No es recomendable enviar a esta dirección.'
   }
-  if (result.value.is_valid) {
+  if (result.value.estado === 'valido') {
     return `El correo ${email.value} tiene un formato válido, el dominio existe y el buzón es alcanzable.`
   }
-  return result.value.reason || 'El correo no pudo ser verificado. Revisa la dirección e intenta de nuevo.'
+  const motivos = {
+    'formato_invalido': 'El formato del correo es incorrecto.',
+    'sin_mx': 'El dominio del correo electrónico no tiene servidores de correo válidos (sin registros MX).',
+    'buzon_inexistente': 'El buzón de correo no existe o no es alcanzable.',
+    'rechazado': 'El servidor de correo rechazó la verificación.',
+  }
+  return motivos[result.value.motivo] || result.value.motivo || 'El correo no pudo ser verificado. Revisa la dirección e intenta de nuevo.'
 })
 
 const resultClasses = computed(() => {
   if (!result.value) return ''
-  if (result.value.is_disposable) {
+  if (result.value.estado === 'desechable') {
     return 'bg-amber-500/10 border-amber-500/25 shadow-neon-amber'
   }
-  if (result.value.is_valid) {
+  if (result.value.estado === 'valido') {
     return 'bg-emerald-500/10 border-emerald-500/25 shadow-neon-secondary'
   }
   return 'bg-red-500/10 border-red-500/25 shadow-neon-red'
@@ -112,8 +121,8 @@ const resultClasses = computed(() => {
 
 const resultTextColor = computed(() => {
   if (!result.value) return ''
-  if (result.value.is_disposable) return 'text-amber-400'
-  if (result.value.is_valid) return 'text-emerald-400'
+  if (result.value.estado === 'desechable') return 'text-amber-400'
+  if (result.value.estado === 'valido') return 'text-emerald-400'
   return 'text-red-400'
 })
 </script>
