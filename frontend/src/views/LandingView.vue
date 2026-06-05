@@ -156,7 +156,7 @@
 
             <div class="mb-6">
               <span class="font-outfit text-5xl font-extrabold text-brand-text">${{ plan.price }}</span>
-              <span class="text-brand-muted text-sm ml-2">CLP</span>
+              <span class="text-brand-muted text-sm ml-2">USD</span>
             </div>
 
             <ul class="space-y-3 mb-8 flex-1">
@@ -168,13 +168,13 @@
               </li>
             </ul>
 
-            <a
-              :href="plan.url"
+            <router-link
+              to="/pricing"
               class="w-full text-center"
               :class="plan.featured ? 'btn-primary' : 'btn-secondary'"
             >
               Comprar créditos
-            </a>
+            </router-link>
           </div>
         </div>
       </div>
@@ -250,7 +250,7 @@ const plans = [
   {
     name: 'Starter',
     tagline: 'Ideal para freelancers',
-    price: '1.990',
+    price: '2.00',
     credits: 2000,
     features: [
       '2.000 créditos de validación',
@@ -259,12 +259,11 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: false,
-    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/3eb225d2-7a51-48ef-ad40-d57f2335782e',
   },
   {
     name: 'Pro',
     tagline: 'Para agencias pequeñas',
-    price: '4.990',
+    price: '5.00',
     credits: 10000,
     features: [
       '10.000 créditos de validación',
@@ -273,21 +272,19 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: true,
-    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/c6cb9e2c-a4cc-45ef-a698-e55b72e0e4f7',
   },
   {
     name: 'Agency',
     tagline: 'Para equipos de marketing',
-    price: '9.900',
+    price: '10.00',
     credits: 30000,
     features: [
       '30.000 créditos de validación',
       'API de validación incluida',
       'Webhook de resultados',
-      'Suscripción mensual',
+      'Pago único, sin amarres',
     ],
     featured: false,
-    url: 'https://wearesamod.lemonsqueezy.com/checkout/buy/3efb4d37-3627-4c34-87da-738a66675d3a',
   },
 ]
 </script>

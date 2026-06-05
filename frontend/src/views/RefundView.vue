@@ -72,7 +72,7 @@
             </p>
             <ul class="list-disc pl-5 space-y-1">
               <li>El correo electrónico asociado a tu cuenta de CleanMail.</li>
-              <li>El número de recibo o confirmación de la compra (provisto por Lemon Squeezy).</li>
+              <li>El número de recibo o confirmación de la compra (provisto por Paddle).</li>
               <li>El paquete de créditos que deseas reembolsar.</li>
             </ul>
             <p class="mt-2 font-semibold text-brand-text">

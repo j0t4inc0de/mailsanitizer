@@ -85,7 +85,7 @@
               No vendemos ni transferimos tu información personal a terceros, excepto a los proveedores de servicios que nos ayudan a operar la plataforma de manera segura, tales como:
             </p>
             <ul class="list-disc pl-5 space-y-1">
-              <li><strong>Pasarelas de Pago:</strong> Procesadores de pago como Lemon Squeezy, que administran la facturación segura de créditos.</li>
+              <li><strong>Pasarelas de Pago:</strong> Procesadores de pago como Paddle, que administran la facturación segura de créditos.</li>
               <li><strong>Infraestructura en la nube:</strong> Proveedores de servidores seguros VPS y base de datos donde se aloja de forma encriptada la plataforma.</li>
             </ul>
           </section>
