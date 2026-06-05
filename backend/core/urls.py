@@ -12,6 +12,7 @@ from core.views import (
     LemonSqueezyWebhookView,
     MagicLinkRequestView,
     MagicLinkVerifyView,
+    PaddleWebhookView,
     SingleValidateView,
     TaskDetailView,
     TaskDiagnosticView,
@@ -45,4 +46,5 @@ urlpatterns = [
 
     # ── Webhooks ────────────────────────────────────────────────────────
     path("webhooks/lemonsqueezy/", LemonSqueezyWebhookView.as_view(), name="webhook-lemonsqueezy"),
+    path("webhooks/paddle/", PaddleWebhookView.as_view(), name="webhook-paddle"),
 ]

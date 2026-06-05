@@ -177,6 +177,17 @@ LEMONSQUEEZY_VARIANT_CREDITS = {
 }
 
 # =============================================================================
+# Paddle webhook secret and price-ID → credits mapping
+# =============================================================================
+PADDLE_WEBHOOK_SECRET = os.environ.get("PADDLE_WEBHOOK_SECRET", "")
+
+PADDLE_PRICE_CREDITS = {
+    os.environ.get("PADDLE_PRICE_STARTER", "price_starter"): 2000,
+    os.environ.get("PADDLE_PRICE_PRO", "price_pro"): 10000,
+    os.environ.get("PADDLE_PRICE_AGENCY", "price_agency"): 30000,
+}
+
+# =============================================================================
 # Frontend base URL (for magic-link generation)
 # =============================================================================
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://clean.wearesamod.com")

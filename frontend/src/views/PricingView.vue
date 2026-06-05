@@ -179,7 +179,7 @@ const faqs = [
   },
   {
     q: '¿Puedo probar antes de comprar?',
-    a: 'Al crear tu cuenta recibes 50 créditos gratis automáticamente para probar el servicio. No necesitas tarjeta de crédito para empezar.',
+    a: 'Al crear tu cuenta recibes 100 créditos gratis automáticamente para probar el servicio. No necesitas tarjeta de crédito para empezar.',
   },
   {
     q: '¿Qué métodos de pago aceptan?',

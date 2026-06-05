@@ -1,10 +1,11 @@
 """
 Email validation pipeline — CleanMail by Samod.
 
-Three-stage pipeline:
+Four-stage pipeline:
   1. Syntax check (RFC 5322 regex)
   2. Disposable domain check (in-memory set)
   3. DNS MX record lookup (5-second timeout, cached 1 hour)
+  4. SMTP mailbox probe (EHLO/RCPT TO handshake, cached 30 min)
 
 Public API:
     validate_email(email: str) -> dict
@@ -14,6 +15,7 @@ import re
 
 from core.services.disposable_checker import is_disposable
 from core.services.mx_checker import has_mx_record
+from core.services.smtp_checker import check_smtp_mailbox
 
 # ---------------------------------------------------------------------------
 # RFC 5322 simplified regex for email syntax validation
@@ -46,6 +48,9 @@ def validate_email(email: str) -> dict:
     1. **Syntax** — checks against an RFC 5322-derived regex.
     2. **Disposable** — checks the domain against a known list.
     3. **MX** — verifies that the domain publishes at least one MX record.
+    4. **SMTP** — performs an EHLO/RCPT TO handshake to confirm the mailbox
+       exists on the server. Providers that block SMTP probing are treated
+       as "unverifiable" and the email is returned as valid (safe default).
 
     Args:
         email: The raw email string to validate.
@@ -72,5 +77,9 @@ def validate_email(email: str) -> dict:
     # Stage 3: MX record
     if not has_mx_record(domain):
         return {"estado": "invalido", "motivo": "sin_mx"}
+
+    # Stage 4: SMTP mailbox probe
+    if not check_smtp_mailbox(email, domain):
+        return {"estado": "invalido", "motivo": "buzon_inexistente"}
 
     return {"estado": "valido", "motivo": None}

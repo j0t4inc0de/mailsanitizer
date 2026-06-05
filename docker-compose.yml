@@ -42,8 +42,17 @@ services:
       - SECRET_KEY=${DJANGO_SECRET_KEY}
       - DEBUG=${DEBUG:-0}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-clean.wearesamod.com,localhost}
-      - LEMON_SQUEEZY_WEBHOOK_SECRET=${LS_WEBHOOK_SECRET}
-      - LEMON_SQUEEZY_STORE_ID=${LS_STORE_ID}
+      # LemonSqueezy
+      - LEMONSQUEEZY_WEBHOOK_SECRET=${LS_WEBHOOK_SECRET}
+      - LS_VARIANT_STARTER=${LS_VARIANT_STARTER}
+      - LS_VARIANT_PRO=${LS_VARIANT_PRO}
+      - LS_VARIANT_AGENCY=${LS_VARIANT_AGENCY}
+      # Paddle (alternativa de pagos)
+      - PADDLE_WEBHOOK_SECRET=${PADDLE_WEBHOOK_SECRET}
+      - PADDLE_PRICE_STARTER=${PADDLE_PRICE_STARTER}
+      - PADDLE_PRICE_PRO=${PADDLE_PRICE_PRO}
+      - PADDLE_PRICE_AGENCY=${PADDLE_PRICE_AGENCY}
+      # Otros
       - N8N_MAGIC_LINK_WEBHOOK=${N8N_MAGIC_LINK_WEBHOOK:-https://n8n.wearesamod.com/webhook/magic-link}
       - FRONTEND_URL=${FRONTEND_URL:-https://clean.wearesamod.com}
     depends_on:

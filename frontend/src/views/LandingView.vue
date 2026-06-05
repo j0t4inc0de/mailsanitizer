@@ -21,7 +21,7 @@
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up animate-delay-400">
           <router-link to="/pricing" class="btn-primary text-lg py-4 px-8">
-            Empieza gratis — 50 créditos incluidos
+          Empieza gratis — 100 créditos incluidos
           </router-link>
           <a href="#como-funciona" class="btn-ghost text-lg">
             ¿Cómo funciona?
@@ -187,7 +187,7 @@
           ¿Listo para limpiar tu lista?
         </h2>
         <p class="text-brand-muted text-lg mb-8 max-w-xl mx-auto">
-          Empieza gratis con 50 créditos. Sin tarjeta de crédito. Sin compromiso.
+          Empieza gratis con 100 créditos. Sin tarjeta de crédito. Sin compromiso.
         </p>
         <router-link to="/pricing" class="btn-primary text-lg py-4 px-10">
           Empezar ahora — Es gratis

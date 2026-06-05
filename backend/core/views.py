@@ -32,7 +32,12 @@ from core.serializers import (
     UserSerializer,
     ValidationTaskSerializer,
 )
-from core.services.payment_service import process_payment_event, verify_webhook_signature
+from core.services.payment_service import (
+    process_payment_event,
+    process_paddle_event,
+    verify_webhook_signature,
+    verify_paddle_signature,
+)
 from core.validators import validate_email
 
 logger = logging.getLogger(__name__)
@@ -641,6 +646,53 @@ class LemonSqueezyWebhookView(APIView):
             )
         except Exception:
             logger.exception("Error inesperado procesando webhook de LemonSqueezy.")
+            return Response(
+                {"error": True, "detalle": "Error interno procesando el evento."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        return Response({"recibido": True}, status=status.HTTP_200_OK)
+
+
+class PaddleWebhookView(APIView):
+    """
+    POST /api/webhooks/paddle/
+
+    Receives webhook events from Paddle. Verifies the HMAC-SHA256
+    signature from the ``Paddle-Signature`` header, handles only
+    ``transaction.completed`` events, and credits the user's account.
+    """
+
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request):
+        signature = request.META.get("HTTP_PADDLE_SIGNATURE", "")
+        secret = settings.PADDLE_WEBHOOK_SECRET
+
+        if not verify_paddle_signature(request.body, signature, secret):
+            return Response(
+                {"error": True, "detalle": "Firma de Paddle inválida."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        event_type = request.data.get("event_type", "")
+
+        # Only handle completed transactions
+        if event_type != "transaction.completed":
+            logger.info("Paddle: evento ignorado (%s).", event_type)
+            return Response({"recibido": True, "ignorado": True}, status=status.HTTP_200_OK)
+
+        try:
+            process_paddle_event(request.data)
+        except ValueError as exc:
+            logger.warning("Error procesando evento de Paddle: %s", exc)
+            return Response(
+                {"error": True, "detalle": str(exc)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception:
+            logger.exception("Error inesperado procesando webhook de Paddle.")
             return Response(
                 {"error": True, "detalle": "Error interno procesando el evento."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,

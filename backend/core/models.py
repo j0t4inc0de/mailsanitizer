@@ -44,9 +44,9 @@ class User(models.Model):
         verbose_name="Plan",
     )
     creditos = models.IntegerField(
-        default=50,
+        default=100,
         verbose_name="Créditos disponibles",
-        help_text="Bono de bienvenida: 50 créditos.",
+        help_text="Bono de bienvenida: 100 créditos.",
     )
     magic_token = models.CharField(
         max_length=64,
