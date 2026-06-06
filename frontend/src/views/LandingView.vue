@@ -155,8 +155,13 @@
             <p class="text-brand-muted text-sm mb-5">{{ plan.tagline }}</p>
 
             <div class="mb-6">
-              <span class="font-outfit text-5xl font-extrabold text-brand-text">${{ plan.price }}</span>
-              <span class="text-brand-muted text-sm ml-2">USD</span>
+              <div>
+                <span class="font-outfit text-5xl font-extrabold text-brand-text">${{ plan.price }}</span>
+                <span class="text-brand-muted text-sm ml-2">USD</span>
+              </div>
+              <div v-if="plan.priceClp" class="text-brand-muted text-xs mt-1">
+                ≈ ${{ plan.priceClp }} CLP
+              </div>
             </div>
 
             <ul class="space-y-3 mb-8 flex-1">
@@ -168,13 +173,13 @@
               </li>
             </ul>
 
-            <router-link
-              to="/pricing"
-              class="w-full text-center"
+            <button
+              @click="openCheckout(plan.priceId)"
+              class="w-full text-center py-3 rounded-lg font-semibold transition-all"
               :class="plan.featured ? 'btn-primary' : 'btn-secondary'"
             >
               Comprar créditos
-            </router-link>
+            </button>
           </div>
         </div>
       </div>
@@ -199,7 +204,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
+import { toast } from 'vue-sonner'
 import SingleValidator from '../components/SingleValidator.vue'
+
+const router = useRouter()
+const auth = useAuthStore()
 
 // Animated counters
 const animatedEmails = ref('0')
@@ -243,7 +254,41 @@ onMounted(() => {
     const statsSection = document.querySelectorAll('section')[3]
     if (statsSection) observer.observe(statsSection)
   }, 100)
+
+  // Initialize Paddle
+  if (window.Paddle) {
+    window.Paddle.Initialize({
+      token: 'live_777576b813afa8c37f06f84fc08'
+    });
+  }
 })
+
+const openCheckout = (priceId) => {
+  if (!auth.isAuthenticated || !auth.user) {
+    toast.error('Debes iniciar sesión para comprar créditos.');
+    router.push('/login');
+    return;
+  }
+
+  if (window.Paddle) {
+    window.Paddle.Checkout.open({
+      items: [
+        {
+          priceId: priceId,
+          quantity: 1
+        }
+      ],
+      customer: {
+        email: auth.user.email
+      },
+      customData: {
+        user_id: String(auth.user.id)
+      }
+    });
+  } else {
+    console.error('Paddle no está inicializado');
+  }
+}
 
 // Pricing plans
 const plans = [
@@ -251,6 +296,7 @@ const plans = [
     name: 'Starter',
     tagline: 'Ideal para freelancers',
     price: '2.00',
+    priceClp: '1.990',
     credits: 2000,
     features: [
       '2.000 créditos de validación',
@@ -259,11 +305,13 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: false,
+    priceId: 'pri_01ktd14fshnwkbh33wyep83ymz',
   },
   {
     name: 'Pro',
     tagline: 'Para agencias pequeñas',
     price: '5.00',
+    priceClp: '4.990',
     credits: 10000,
     features: [
       '10.000 créditos de validación',
@@ -272,11 +320,13 @@ const plans = [
       'Los créditos nunca expiran',
     ],
     featured: true,
+    priceId: 'pri_01ktd18mqqxsfyqpken390tvtn',
   },
   {
     name: 'Agency',
     tagline: 'Para equipos de marketing',
     price: '10.00',
+    priceClp: '9.900',
     credits: 30000,
     features: [
       '30.000 créditos de validación',
@@ -285,6 +335,7 @@ const plans = [
       'Pago único, sin amarres',
     ],
     featured: false,
+    priceId: 'pri_01ktd1da3b7m0prr2wxx9gww3g',
   },
 ]
 </script>

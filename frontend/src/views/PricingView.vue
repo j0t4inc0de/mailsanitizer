@@ -48,8 +48,13 @@
 
           <!-- Price -->
           <div class="mb-2">
-            <span class="font-outfit text-5xl font-extrabold text-brand-text">${{ plan.price }}</span>
-            <span class="text-brand-muted text-sm ml-2">USD</span>
+            <div>
+              <span class="font-outfit text-5xl font-extrabold text-brand-text">${{ plan.price }}</span>
+              <span class="text-brand-muted text-sm ml-2">USD</span>
+            </div>
+            <div v-if="plan.priceClp" class="text-brand-muted text-xs mt-1">
+              ≈ ${{ plan.priceClp }} CLP
+            </div>
           </div>
 
           <!-- Credits -->
@@ -156,6 +161,7 @@ const plans = [
     name: 'Starter',
     tagline: 'Ideal para freelancers',
     price: '2.00',
+    priceClp: '1.990',
     credits: 2000,
     creditsFormatted: '2.000',
     costPerEmail: '0.001',
@@ -173,6 +179,7 @@ const plans = [
     name: 'Pro',
     tagline: 'Para agencias pequeñas',
     price: '5.00',
+    priceClp: '4.990',
     credits: 10000,
     creditsFormatted: '10.000',
     costPerEmail: '0.0005',
@@ -190,6 +197,7 @@ const plans = [
     name: 'Agency',
     tagline: 'Para equipos de marketing',
     price: '10.00',
+    priceClp: '9.900',
     credits: 30000,
     creditsFormatted: '30.000',
     costPerEmail: '0.0003',
