@@ -31,6 +31,7 @@
         </div>
       </div>
     </footer>
+    <Toaster theme="dark" richColors position="top-center" />
   </div>
 </template>
 
@@ -38,6 +39,7 @@
 import { onMounted } from 'vue'
 import { useAuthStore } from './stores/auth'
 import Navbar from './components/Navbar.vue'
+import { Toaster } from 'vue-sonner'
 
 const auth = useAuthStore()
 

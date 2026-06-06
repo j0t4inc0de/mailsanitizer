@@ -111,6 +111,7 @@
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { toast } from 'vue-sonner'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -126,7 +127,7 @@ onMounted(() => {
 
 const openCheckout = (priceId) => {
   if (!auth.isAuthenticated || !auth.user) {
-    alert('Debes iniciar sesión para comprar créditos.');
+    toast.error('Debes iniciar sesión para comprar créditos.');
     router.push('/login');
     return;
   }

@@ -10,12 +10,19 @@ import PricingView from '../views/PricingView.vue'
 import TermsView from '../views/TermsView.vue'
 import PrivacyView from '../views/PrivacyView.vue'
 import RefundView from '../views/RefundView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'landing',
     component: LandingView,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView,
     meta: { requiresAuth: false },
   },
   {
