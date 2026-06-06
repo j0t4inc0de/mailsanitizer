@@ -118,7 +118,6 @@ const auth = useAuthStore()
 
 onMounted(() => {
   if (window.Paddle) {
-    window.Paddle.Environment.set('production');
     window.Paddle.Initialize({
       token: 'live_777576b813afa8c37f06f84fc08'
     });
@@ -144,7 +143,7 @@ const openCheckout = (priceId) => {
         email: auth.user.email
       },
       customData: {
-        user_id: auth.user.id
+        user_id: String(auth.user.id)
       }
     });
   } else {
