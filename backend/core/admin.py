@@ -20,6 +20,27 @@ class UserAdmin(admin.ModelAdmin):
     readonly_fields = ("id", "created_at")
     ordering = ("-created_at",)
 
+    def changelist_view(self, request, extra_context=None):
+        """Agrega un mini-dashboard de estadísticas al cargar la lista de usuarios."""
+        from django.contrib import messages
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        weekly = User.objects.filter(created_at__gte=now - timedelta(days=7)).count()
+        monthly = User.objects.filter(created_at__gte=now - timedelta(days=30)).count()
+        
+        # Evitamos duplicar el mensaje en cada recarga
+        storage = messages.get_messages(request)
+        for _ in storage:
+            pass 
+        
+        messages.info(
+            request, 
+            f"📊 DASHBOARD DE CRECIMIENTO: Has conseguido {weekly} usuarios nuevos en los últimos 7 días, y {monthly} en los últimos 30 días."
+        )
+        
+        return super().changelist_view(request, extra_context=extra_context)
 
 @admin.register(ValidationTask)
 class ValidationTaskAdmin(admin.ModelAdmin):
