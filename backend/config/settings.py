@@ -27,6 +27,9 @@ ALLOWED_HOSTS = os.environ.get(
     "localhost,127.0.0.1,clean.wearesamod.com",
 ).split(",")
 
+CSRF_TRUSTED_ORIGINS = ["https://clean.wearesamod.com"]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # =============================================================================
 # Application definition
 # =============================================================================
