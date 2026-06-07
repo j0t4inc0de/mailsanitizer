@@ -8,3 +8,4 @@ redis>=5.0,<6.0
 dnspython>=2.6,<3.0
 requests>=2.32,<3.0
 PyJWT>=2.9,<3.0
+whitenoise>=6.0,<7.0
